@@ -7,7 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 
 @Composable fun FilmsScreen(navController: NavHostController, paddingValues: PaddingValues) {
@@ -29,14 +28,14 @@ import androidx.navigation.NavHostController
 }
 
 @Composable fun ShowFilmsList(navController: NavHostController) {
-	val mockListOfAnime = listOf(
-		"Demon Slayer", "Dorohedoro", "Naruto", "Baruto", "Shmaruto", "One Piece",
-		"HunterVSHunter"
+	val mockListOfFilms = listOf(
+		"Dead or Alive", "Briljantovaja ruka", "Igra v kalmara", "Kurjer", "Mehanik", "Karlson",
+		"Wtirlic"
 	)
 	
 	LazyColumn {
-		items(mockListOfAnime) { anime ->
-			Text(text = anime)
+		items(mockListOfFilms) { film ->
+			Text(text = film)
 		}
 	}
 }
