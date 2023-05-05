@@ -39,7 +39,7 @@ import androidx.navigation.NavHostController
 	
 	LazyColumn {
 		items(mockListOfAnime) { anime ->
-			Text(text = anime, fontSize = 30.sp, color = Color.Yellow)
+			Text(text = anime, fontSize = 36.sp, color = Color.Yellow)
 		}
 	}
 }
