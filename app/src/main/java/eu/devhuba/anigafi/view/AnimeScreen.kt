@@ -14,15 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 
-@Composable fun AnimeScreen(
-	navController: NavHostController, backStackEntry: NavBackStackEntry,
-	paddingValues:
-	PaddingValues
-) {
-	
+@Composable
+fun AnimeScreen(navController: NavHostController, paddingValues: PaddingValues) {
 	Column(
 		modifier = Modifier.fillMaxSize()
 				.padding(bottom = paddingValues.calculateBottomPadding())
@@ -40,10 +35,10 @@ import androidx.navigation.NavHostController
 	
 }
 
-@Composable fun ShowAnimeList(navController: NavHostController) {
+@Composable
+fun ShowAnimeList(navController: NavHostController) {
 	val mockListOfAnime = listOf(
-		"Demon Slayer", "Dorohedoro", "Naruto", "Baruto", "Shmaruto", "One Piece",
-		"HunterVSHunter"
+		"Demon Slayer", "Dorohedoro", "Naruto", "Baruto", "Shmaruto", "One Piece", "HunterVSHunter"
 	)
 	
 	LazyColumn {
