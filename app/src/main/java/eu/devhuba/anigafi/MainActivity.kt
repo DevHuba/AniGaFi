@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import eu.devhuba.anigafi.ui.theme.AniGaFiTheme
 import eu.devhuba.anigafi.view.AnimeScreen
 import eu.devhuba.anigafi.view.FilmsScreen
+import eu.devhuba.anigafi.view.GamesScreen
 
 sealed class Destination(val route: String) {
 	
@@ -78,27 +79,20 @@ fun AppScaffold(navController: NavHostController) {
 			navController = navController, startDestination = Destination.Anime.route
 		) {
 			composable(Destination.Anime.route) {
-				val pagerState = rememberPagerState()
+				val pagerState = rememberPagerState(initialPage = 1)
 				
 				HorizontalPager(state = pagerState, pageCount = 3, ) { page ->
 					when (page) {
 						0 -> {
-							FilmsScreen(navController, paddingValues)
-							Log.i("this", "$pageNumber")
-							Log.i("this", "$pagerState")
+							GamesScreen(navController, paddingValues)
 						}
 
 						1 -> {
 							AnimeScreen(navController, paddingValues)
-							Log.i("this", "$pagerState")
-
-							// Add your second screen composable here
 						}
 
 						2 -> {
 							FilmsScreen(navController, paddingValues)
-							Log.i("this", "$pagerState")
-							// Add your third screen composable here
 						}
 					}
 				}
