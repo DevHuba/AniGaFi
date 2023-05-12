@@ -3,7 +3,6 @@
 package eu.devhuba.anigafi
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,32 +21,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import eu.devhuba.anigafi.ui.theme.AniGaFiTheme
-import eu.devhuba.anigafi.view.AnimeScreen
-import eu.devhuba.anigafi.view.FilmsScreen
-import eu.devhuba.anigafi.view.GamesScreen
+import eu.devhuba.anigafi.view.films.FilmsScreen
+import eu.devhuba.anigafi.view.games.GamesScreen
+import eu.devhuba.anigafi.view.anime.AnimeScreen
 
 sealed class Destination(val route: String) {
-	
-	//Count our screens
-	companion object {
-		var countObjects = 0
-	}
-	
-	init {
-		countObjects++
-	}
-	
 	object Anime : Destination("anime")
+	object AnimeDetail : Destination("character/{characterId}") {
+        fun createRoute(animeId: Int?) = "anime/$animeId"
+    }
 	object Films : Destination("films")
+	object FilmDetail : Destination("character/{characterId}") {
+		fun createRoute(filmId: Int?) = "anime/$filmId"
+	}
 	object Games : Destination("games")
-
-//    object CharacterDetail : Destination("character/{characterId}") {
-//        fun createRoute(characterId: Int?) = "character/$characterId"
-//    }
+	object GameDetail : Destination("character/{characterId}") {
+		fun createRoute(gameId: Int?) = "anime/$gameId"
+	}
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 class MainActivity : ComponentActivity() {
-	@ExperimentalMaterialApi
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
@@ -70,7 +64,6 @@ class MainActivity : ComponentActivity() {
 fun AppScaffold(navController: NavHostController) {
 	
 	val scaffoldState = rememberScaffoldState()
-	val pageNumber = Destination.countObjects
 	
 	Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
 	) { paddingValues ->
@@ -81,16 +74,16 @@ fun AppScaffold(navController: NavHostController) {
 			composable(Destination.Anime.route) {
 				val pagerState = rememberPagerState(initialPage = 1)
 				
-				HorizontalPager(state = pagerState, pageCount = 3, ) { page ->
+				HorizontalPager(state = pagerState, pageCount = 3) { page ->
 					when (page) {
 						0 -> {
 							GamesScreen(navController, paddingValues)
 						}
-
+						
 						1 -> {
 							AnimeScreen(navController, paddingValues)
 						}
-
+						
 						2 -> {
 							FilmsScreen(navController, paddingValues)
 						}

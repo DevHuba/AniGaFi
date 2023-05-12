@@ -1,4 +1,4 @@
-package eu.devhuba.anigafi.view
+package eu.devhuba.anigafi.view.games
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

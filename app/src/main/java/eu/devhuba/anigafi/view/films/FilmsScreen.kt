@@ -1,4 +1,4 @@
-package eu.devhuba.anigafi.view
+package eu.devhuba.anigafi.view.films
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun AnimeScreen(navController: NavHostController, paddingValues: PaddingValues) {
+fun FilmsScreen(navController: NavHostController, paddingValues: PaddingValues) {
+	
 	Column(
 		modifier = Modifier.fillMaxSize()
 				.padding(bottom = paddingValues.calculateBottomPadding())
-				.background(Color.Black),
+				.background(color = Color.Black),
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
 		Column(
@@ -29,21 +30,27 @@ fun AnimeScreen(navController: NavHostController, paddingValues: PaddingValues) 
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.Center
 		) {
-			ShowAnimeList(navController)
+			ShowFilmsList(navController)
 		}
 	}
 	
 }
 
 @Composable
-fun ShowAnimeList(navController: NavHostController) {
-	val mockListOfAnime = listOf(
-		"Demon Slayer", "Dorohedoro", "Naruto", "Baruto", "Shmaruto", "One Piece", "HunterVSHunter"
+fun ShowFilmsList(navController: NavHostController) {
+	val mockListOfFilms = listOf(
+		"Dead or Alive",
+		"Briljantovaja ruka",
+		"Igra v kalmara",
+		"Kurjer",
+		"Mehanik",
+		"Karlson",
+		"Wtirlic"
 	)
 	
 	LazyColumn {
-		items(mockListOfAnime) { anime ->
-			Text(text = anime, fontSize = 36.sp, color = Color.Yellow)
+		items(mockListOfFilms) { film ->
+			Text(text = film, fontSize = 36.sp, color = Color.Yellow)
 		}
 	}
 }
