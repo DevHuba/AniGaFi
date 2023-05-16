@@ -2,10 +2,10 @@ package eu.devhuba.anigafi.model
 
 data class AnimeApiResponse(
 	val next_episode_at: String?,
-	val anime: CurrentCharacter?
+	val anime: CurrentAnime?
 )
 
-data class CurrentCharacter(
+data class CurrentAnime(
 	val id: Int?,
 	val name: String?,
 	val russian: String?,
