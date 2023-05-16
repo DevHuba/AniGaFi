@@ -27,6 +27,7 @@ android {
 
         buildConfigField("String", "ANIME_CLIENT_ID", apikeyProperties['ANIME_CLIENT_ID'])
         buildConfigField("String", "ANIME_SECRET", apikeyProperties['ANIME_SECRET'])
+        buildConfigField("String", "ANIME_AUTH_TOKEN", apikeyProperties['ANIME_AUTH_TOKEN'])
 
     }
 
