@@ -3,9 +3,27 @@ package eu.devhuba.anigafi.model.api
 import eu.devhuba.anigafi.model.AnimeApiResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Query
 
-interface ShikimoriApi{
-	@GET("anime")
-	fun getAnime(@Query("nameStartsWith") name: String) : Call<AnimeApiResponse>
+interface ShikimoriApi {
+    @GET("/calendar")
+    fun getCalendar(): Call<AnimeApiResponse>
+
+//    @GET("/animes/search")
+//    fun getCalendar(@Query("q") animeName: String): Call<AnimeApiResponse>
+
+//    @GET("/animes/{id}")
+//    fun getSpecificAnimeById(@Path("id") id: String): Call<CurrentAnime>
+
+//    @FormUrlEncoded
+//    @POST("/oauth/token")
+//    suspend fun getToken(
+//        @Field("grant_type") grantType: String,
+//        @Field("client_id") clientId: String,
+//        @Field("client_secret") clientSecret: String,
+//        @Field("code") code: String,
+//        @Field("redirect_uri") redirectUri: String,
+//    ): String
+
 }
+
+
