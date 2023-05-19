@@ -25,7 +25,10 @@ class ShikimoriApiRepo(private val animeApi: ShikimoriApi) {
                     animes.value = NetworkResult.Error(response.message())
             }
 
-            override fun onFailure(call: Call<AnimeApiResponse>, t: Throwable) {
+            override fun onFailure(
+                call: Call<AnimeApiResponse>,
+                t: Throwable
+            ) {
                 t.localizedMessage?.let {
                     animes.value = NetworkResult.Error(it)
                 }

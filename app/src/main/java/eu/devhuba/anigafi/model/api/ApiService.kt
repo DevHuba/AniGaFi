@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
-    //TODO: Delete this line if all works
+    //TODO: Delete this line if all works 
 //    private const val BASE_URL = "https://shikimori.me/api"
 
     private fun getRetrofit(): Retrofit {
@@ -23,8 +23,14 @@ object ApiService {
         val clientInterceptor = okhttp3.Interceptor { chain ->
             var request: Request = chain.request()
             request = request.newBuilder()
-                .addHeader("User-Agent", "ShikiAni")
-                .addHeader("Authorization", "Bearer $token")
+                .addHeader(
+                    "User-Agent",
+                    "ShikiAni"
+                )
+                .addHeader(
+                    "Authorization",
+                    "Bearer $token"
+                )
                 .build()
 
             chain.proceed(request)
