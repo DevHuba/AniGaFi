@@ -5,8 +5,8 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface ShikimoriApi {
-    @GET("/calendar")
-    fun getCalendar(): Call<AnimeApiResponse>
+    @GET("calendar")
+    fun getCalendar(): Call<List<AnimeApiResponse>>
 
 //    @GET("/animes/search")
 //    fun getCalendar(@Query("q") animeName: String): Call<AnimeApiResponse>

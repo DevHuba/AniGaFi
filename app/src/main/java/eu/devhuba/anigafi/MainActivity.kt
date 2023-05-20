@@ -5,6 +5,7 @@ package eu.devhuba.anigafi
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -25,6 +26,7 @@ import eu.devhuba.anigafi.ui.theme.AniGaFiTheme
 import eu.devhuba.anigafi.view.anime.AnimeScreen
 import eu.devhuba.anigafi.view.films.FilmsScreen
 import eu.devhuba.anigafi.view.games.GamesScreen
+import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
 
 sealed class Destination(val route: String) {
     object Anime : Destination("anime")
@@ -46,6 +48,9 @@ sealed class Destination(val route: String) {
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val avm by viewModels<AnimeApiViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -55,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    AppScaffold(navController = navController)
+                    AppScaffold(navController = navController, avm)
                 }
             }
         }
@@ -65,7 +70,7 @@ class MainActivity : ComponentActivity() {
 
 @ExperimentalMaterialApi
 @Composable
-fun AppScaffold(navController: NavHostController) {
+fun AppScaffold(navController: NavHostController, avm: AnimeApiViewModel) {
 
     val scaffoldState = rememberScaffoldState()
 
@@ -85,7 +90,7 @@ fun AppScaffold(navController: NavHostController) {
                         }
 
                         1 -> {
-                            AnimeScreen(navController, paddingValues)
+                            AnimeScreen(navController, avm, paddingValues)
                         }
 
                         2 -> {

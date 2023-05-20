@@ -8,14 +8,14 @@ import retrofit2.Response
 
 
 class ShikimoriApiRepo(private val animeApi: ShikimoriApi) {
-    val animes = MutableStateFlow<NetworkResult<AnimeApiResponse>>(NetworkResult.Initial())
+    val animes = MutableStateFlow<NetworkResult<List<AnimeApiResponse>>>(NetworkResult.Initial())
 
     fun query() {
         animes.value = NetworkResult.Loading()
-        animeApi.getCalendar().enqueue(object : Callback<AnimeApiResponse> {
+        animeApi.getCalendar().enqueue(object : Callback<List<AnimeApiResponse>> {
             override fun onResponse(
-                call: Call<AnimeApiResponse>,
-                response: Response<AnimeApiResponse>
+                call: Call<List<AnimeApiResponse>>,
+                response: Response<List<AnimeApiResponse>>
             ) {
                 if (response.isSuccessful)
                     response.body()?.let {
@@ -26,7 +26,7 @@ class ShikimoriApiRepo(private val animeApi: ShikimoriApi) {
             }
 
             override fun onFailure(
-                call: Call<AnimeApiResponse>,
+                call: Call<List<AnimeApiResponse>>,
                 t: Throwable
             ) {
                 t.localizedMessage?.let {
