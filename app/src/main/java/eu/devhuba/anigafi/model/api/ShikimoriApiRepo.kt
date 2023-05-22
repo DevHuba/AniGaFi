@@ -1,5 +1,6 @@
 package eu.devhuba.anigafi.model.api
 
+import android.util.Log
 import eu.devhuba.anigafi.model.AnimeApiResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
@@ -20,6 +21,7 @@ class ShikimoriApiRepo(private val animeApi: ShikimoriApi) {
                 if (response.isSuccessful)
                     response.body()?.let {
                         animes.value = NetworkResult.Success(it)
+                        Log.i("this", "it -> $it")
                     }
                 else
                     animes.value = NetworkResult.Error(response.message())
