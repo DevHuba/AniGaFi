@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,14 +28,12 @@ import eu.devhuba.anigafi.ImageTemplate
 import eu.devhuba.anigafi.model.AnimeApiResponse
 import eu.devhuba.anigafi.model.Constants
 import eu.devhuba.anigafi.model.api.NetworkResult
-import eu.devhuba.anigafi.ui.theme.AppFontFamily
+import eu.devhuba.anigafi.ui.theme.Typography
 import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
 
 @Composable
 fun AnimeScreen(
-    navController: NavHostController,
-    avm: AnimeApiViewModel,
-    paddingValues: PaddingValues
+    navController: NavHostController, avm: AnimeApiViewModel, paddingValues: PaddingValues
 ) {
 
     val result by avm.result.collectAsState()
@@ -75,32 +74,28 @@ fun AnimeScreen(
 
 @Composable
 fun ShowAnimeList(
-    result: NetworkResult<List<AnimeApiResponse>>,
-    navController: NavHostController
+    result: NetworkResult<List<AnimeApiResponse>>, navController: NavHostController
 ) {
 
     val baseUrlForImage = Constants.BASE_URL_FOR_IMAGE
 
     result.data?.let { animes ->
         LazyColumn(
-            modifier = Modifier.background(Color.Black),
-            verticalArrangement = Arrangement.Top
+            modifier = Modifier.background(Color.Black), verticalArrangement = Arrangement.Top
         ) {
             items(animes) { anime ->
-                val animeName = anime.anime?.name
+                val animeNameInRussian = anime.anime?.russian
                 val imageUrl = baseUrlForImage + anime.anime?.image?.original
 
                 Column(
                     modifier = Modifier
-
                         .background(Color.Black)
                         .fillMaxSize()
                         .wrapContentHeight()
                         .padding(16.dp, 4.dp)
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         ImageTemplate(
                             url = imageUrl,
@@ -111,12 +106,15 @@ fun ShowAnimeList(
                             modifier = Modifier
                                 .weight(1f)
                                 .border(4.dp, color = Color.Red),
-                            backgroundColor = Color.Green
+                            backgroundColor = MaterialTheme.colors.secondaryVariant
                         ) {
-                            Column() {
-                                Text(text = "Title", fontFamily = AppFontFamily)
-                                Text(text = "Description")
-                                Text(text = "rating")
+                            Column(modifier = Modifier.padding(4.dp)) {
+                                Text(text = "$animeNameInRussian", style = Typography.h1)
+                                Text(
+                                    text = "Реитинг : ${anime.anime?.score}",
+                                    style = Typography.h2
+                                )
+                                Text(text = "Студия : ")
                             }
 
                         }

@@ -8,27 +8,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import eu.devhuba.anigafi.R
 
-val AppFontFamily = FontFamily(
-    Font(R.font.black_casper)
+val BlackCasperFontFamily = FontFamily(
+    Font(R.font.vag18_rounded_m_normal),
+)
+val BoycottFontFamily = FontFamily(
+    Font(R.font.vag18_rounded_m_normal)
 )
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     h1 = TextStyle(
-        fontFamily = AppFontFamily,
+        fontFamily = BoycottFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 32.sp
-    )/* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
+        fontSize = 22.sp
     ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
+
+    h2 = TextStyle(
+        fontFamily = BlackCasperFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 16.sp
+    ),
+
+    h3 = TextStyle(
+        fontFamily = BlackCasperFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp
     )
-    */
+
 )
 

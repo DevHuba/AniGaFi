@@ -9,7 +9,7 @@ val Orange = Color(0xFFFFA559)
 val Beige = Color(0xFFFFE6C7)
 
 //Secondary colors
-val Grey = Color(0xFFEFF5F5)
+val Gray = Color(0xFFEFF5F5)
 val LightGreen = Color(0xFFD6E4E5)
 val Green = Color(0xFF497174)
 val Orange2 = Color(0xFFEB6440)

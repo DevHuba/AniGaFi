@@ -13,30 +13,34 @@ class ShikimoriApiRepo(private val animeApi: ShikimoriApi) {
 
     fun query() {
         animes.value = NetworkResult.Loading()
-        animeApi.getCalendar().enqueue(object : Callback<List<AnimeApiResponse>> {
-            override fun onResponse(
-                call: Call<List<AnimeApiResponse>>,
-                response: Response<List<AnimeApiResponse>>
-            ) {
-                if (response.isSuccessful)
-                    response.body()?.let {
-                        animes.value = NetworkResult.Success(it)
+        animeApi.getCalendar()
+            .enqueue(object : Callback<List<AnimeApiResponse>> {
+                override fun onResponse(
+                    call: Call<List<AnimeApiResponse>>,
+                    response: Response<List<AnimeApiResponse>>
+                ) {
+                    if (response.isSuccessful)
+                        response.body()
+                            ?.let {
+                                animes.value = NetworkResult.Success(it)
+                                Log.i("this", "it -> $it")
+                            }
+                    else {
+                        animes.value = NetworkResult.Error(response.message())
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<List<AnimeApiResponse>>,
+                    t: Throwable
+                ) {
+                    t.localizedMessage?.let {
+                        animes.value = NetworkResult.Error(it)
                         Log.i("this", "it -> $it")
                     }
-                else
-                    animes.value = NetworkResult.Error(response.message())
-            }
-
-            override fun onFailure(
-                call: Call<List<AnimeApiResponse>>,
-                t: Throwable
-            ) {
-                t.localizedMessage?.let {
-                    animes.value = NetworkResult.Error(it)
+                    t.printStackTrace()
                 }
-                t.printStackTrace()
-            }
 
-        })
+            })
     }
 }
