@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AniGaFi</string>
+    <string name="rate_icon">rate icon</string>
 </resources>

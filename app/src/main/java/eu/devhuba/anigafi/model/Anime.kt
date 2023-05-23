@@ -1,6 +1,7 @@
 package eu.devhuba.anigafi.model
 
 data class AnimeApiResponse(
+	val next_episode: String?,
 	val next_episode_at: String?,
 	val anime: CurrentAnime?
 )
@@ -12,7 +13,7 @@ data class CurrentAnime(
 	val image: ImageRange?,
 	val kind: String?,
 	val score: String?,
-	val status : String?,
+	val status: String?,
 	val episodes: String?,
 	val episodes_aired: String?,
 	val aired_on: String?
