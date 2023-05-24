@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,6 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import eu.devhuba.anigafi.ImageTemplate
@@ -38,6 +44,8 @@ import eu.devhuba.anigafi.ui.theme.Green
 import eu.devhuba.anigafi.ui.theme.Orange
 import eu.devhuba.anigafi.ui.theme.Typography
 import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
+import eu.wewox.textflow.TextFlow
+import eu.wewox.textflow.TextFlowObstacleAlignment
 import java.time.OffsetDateTime
 
 @Composable
@@ -51,12 +59,19 @@ fun AnimeScreen(
 	
 	Column(
 		modifier = Modifier
-				.fillMaxSize()
-				.padding(bottom = paddingValues.calculateBottomPadding())
-				.background(Color.Black),
+			.fillMaxSize()
+			.padding(bottom = paddingValues.calculateBottomPadding())
+			.background(Color.Black),
 		horizontalAlignment = Alignment.CenterHorizontally,
 		
 		) {
+		OutlinedTextField(value = "text.value",
+			onValueChange = {},
+			label = { Text(text = stringResource(R.string.anime_search_label)) },
+			placeholder = { Text(text = stringResource(R.string.anime_search_placeholder)) },
+			keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+		)
+		
 		Column(
 			modifier = Modifier.fillMaxSize(),
 			horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,47 +118,56 @@ fun ShowAnimeList(
 				val textAnimeNameRUS = anime.anime?.russian
 				val imageUrl = baseUrlForImage + anime.anime?.image?.original
 				val formattedRateNumber = anime.anime?.score?.dropLast(1)?.toFloat()
-				var iconRate = painterResource(id = R.drawable.ic_low_rate)
+				var iconRate = painterResource(id = R.drawable.ic_rate_star)
 				var iconRateColor = Green
 				var textRateColor = Color.White
-				val textNextEpisode = anime.next_episode_at
-				val formattedNextEpisodeDate = OffsetDateTime.parse(textNextEpisode)
-				val textEpisodeNumber = anime.next_episode
+				val textNextEpisodeDate = anime.next_episode_at
+				val formattedNextEpisodeDate = OffsetDateTime.parse(textNextEpisodeDate)
+				val textNextEpisodeTitle = stringResource(R.string.title_next_episode)
+				val textNextEpisodeNumber = anime.next_episode
 				
-				val type = if (anime.anime?.kind == "tv") "Сериал" else "ХЗ ЧТО ЭТО"
+				val type = if (anime.anime?.kind == "tv") "Сериал" else "Неизвестный"
 				val formattedAnimeName = if (textAnimeNameRUS?.length!! > maxLengthName) {
 					textAnimeNameRUS.take(maxLengthName).plus("...")
 				} else textAnimeNameRUS
 				
+				//Style inside String
+				val annotatedTextNextEpisode = buildAnnotatedString {
+					append(textNextEpisodeTitle)
+					withStyle(style = SpanStyle(color = Orange)) {
+						append(textNextEpisodeNumber)
+					}
+				}
+				
 				//Icons
 				if (formattedRateNumber != null) {
 					iconRate = when {
-						formattedRateNumber > 8.0 -> {
+						formattedRateNumber > 7.2 -> {
 							iconRateColor = Color.Yellow
 							textRateColor = Color.Black
-							painterResource(id = R.drawable.ic_high_rate)
+							painterResource(id = R.drawable.ic_rate_star)
 						}
 						
-						formattedRateNumber in 5.0..8.0 -> {
+						formattedRateNumber in 5.0..7.2 -> {
 							iconRateColor = Green
 							textRateColor = Beige
-							painterResource(id = R.drawable.ic_high_rate)
+							painterResource(id = R.drawable.ic_rate_star)
 						}
 						
 						else -> {
-							iconRateColor = Color.Black
-							textRateColor = Color.White
-							painterResource(id = R.drawable.ic_high_rate)
+							iconRateColor = Beige
+							textRateColor = Color.Black
+							painterResource(id = R.drawable.ic_rate_star)
 						}
 					}
 				}
 				
 				Column(
 					modifier = Modifier
-							.background(Color.Black)
-							.fillMaxSize()
-							.wrapContentHeight()
-							.padding(16.dp, 4.dp)
+						.background(Color.Black)
+						.fillMaxSize()
+						.wrapContentHeight()
+						.padding(16.dp, 4.dp)
 				
 				) {
 					Row(
@@ -153,25 +177,6 @@ fun ShowAnimeList(
 							ImageTemplate(
 								url = imageUrl, modifier = Modifier.fillMaxWidth()
 							)
-							
-							Box(
-//								modifier = Modifier.align(Alignment.Top)
-							) {
-								Icon(
-									modifier = Modifier.size(70.dp),
-									painter = iconRate,
-									contentDescription = stringResource(R.string.rate_icon),
-									tint = iconRateColor
-								)
-								
-								Text(
-									text = "$formattedRateNumber",
-									color = textRateColor,
-									modifier = Modifier.align(Alignment.Center),
-									style = Typography.h3
-								)
-							}
-							
 						}
 						
 						Card(
@@ -181,44 +186,44 @@ fun ShowAnimeList(
 							Column(
 								modifier = Modifier.padding(16.dp)
 							) {
-								Text(
-									text = formattedAnimeName,
-									modifier = Modifier.padding(0.dp, 4.dp),
-									style = Typography.h1
-								)
+								TextFlow(text = formattedAnimeName,
+									modifier = Modifier,
+									style = Typography.h1,
+									obstacleAlignment = TextFlowObstacleAlignment.TopEnd,
+									obstacleContent = {
+										Box(
+										) {
+											Icon(
+												modifier = Modifier.size(50.dp),
+												painter = iconRate,
+												contentDescription = stringResource(R.string.rate_icon),
+												tint = iconRateColor
+											)
+											
+											Text(
+												text = "$formattedRateNumber",
+												color = textRateColor,
+												modifier = Modifier.align(Alignment.Center),
+												style = Typography.h3
+											)
+										}
+									})
 								Text(text = "Тип : $type", modifier = Modifier.padding(0.dp, 4.dp))
 								Text(
 									text = "Следующий эпизод : ",
 									modifier = Modifier.padding(0.dp, 4.dp)
 								)
 								Text(
-									text = "${formattedNextEpisodeDate.dayOfMonth} " + "${formattedNextEpisodeDate.month} " + "${formattedNextEpisodeDate.year} " + "${formattedNextEpisodeDate.hour}" + ":" + "${formattedNextEpisodeDate.minute}",
+									text = "${formattedNextEpisodeDate.dayOfMonth} " + "${formattedNextEpisodeDate.month} " + "${formattedNextEpisodeDate.hour}" + ":" + "${formattedNextEpisodeDate.minute}",
 									color = Orange,
+									modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 4.dp)
 								)
 								Text(
-									text = "Номер серии : $textEpisodeNumber",
+									text = annotatedTextNextEpisode,
 									modifier = Modifier.padding(0.dp, 4.dp)
 								)
 							}
 						}
-
-//						Box(
-//							modifier = Modifier.align(Alignment.Top)
-//						) {
-//							Icon(
-//								modifier = Modifier.size(70.dp),
-//								painter = iconRate,
-//								contentDescription = stringResource(R.string.rate_icon),
-//								tint = iconRateColor
-//							)
-//							
-//							Text(
-//								color = textRateColor,
-//								modifier = Modifier.align(Alignment.Center),
-//								text = "$formattedRateNumber",
-//								style = Typography.h3
-//							)
-//						}
 					}
 				}
 			}

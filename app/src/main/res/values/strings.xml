@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">AniGaFi</string>
     <string name="rate_icon">rate icon</string>
+    <string name="title_next_episode">"Hoмер серии : "</string>
+    <string name="anime_search_label">Поиск аниме</string>
+    <string name="anime_search_placeholder">Aниме</string>
 </resources>

@@ -15,27 +15,19 @@ val V18Rounded = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
 	h1 = TextStyle(
-		fontFamily = V18Rounded,
-		fontWeight = FontWeight.Normal,
-		fontSize = 22.sp
+		fontFamily = V18Rounded, fontWeight = FontWeight.Normal, fontSize = 22.sp
 	),
 	
 	h2 = TextStyle(
-		fontFamily = V18Rounded,
-		fontWeight = FontWeight.Normal,
-		fontSize = 16.sp
+		fontFamily = V18Rounded, fontWeight = FontWeight.Normal, fontSize = 16.sp
 	),
 	
 	h3 = TextStyle(
-		fontFamily = V18Rounded,
-		fontWeight = FontWeight.Bold,
-		fontSize = 16.sp
+		fontFamily = V18Rounded, fontWeight = FontWeight.Bold, fontSize = 14.sp
 	),
 	
 	body1 = TextStyle(
-		fontFamily = V18Rounded,
-		fontWeight = FontWeight.Normal,
-		fontSize = 14.sp
+		fontFamily = V18Rounded, fontWeight = FontWeight.Normal, fontSize = 14.sp
 	)
 
 )
