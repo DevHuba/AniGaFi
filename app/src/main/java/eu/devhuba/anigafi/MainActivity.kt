@@ -29,80 +29,81 @@ import eu.devhuba.anigafi.view.games.GamesScreen
 import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
 
 sealed class Destination(val route: String) {
-    object Anime : Destination("anime")
-    object AnimeDetail : Destination("character/{characterId}") {
-        fun createRoute(animeId: Int?) = "anime/$animeId"
-    }
-
-    object Films : Destination("films")
-    object FilmDetail : Destination("character/{characterId}") {
-        fun createRoute(filmId: Int?) = "anime/$filmId"
-    }
-
-    object Games : Destination("games")
-    object GameDetail : Destination("character/{characterId}") {
-        fun createRoute(gameId: Int?) = "anime/$gameId"
-    }
+	object Anime : Destination("anime")
+	object AnimeDetail : Destination("character/{characterId}") {
+		fun createRoute(animeId: Int?) = "anime/$animeId"
+	}
+	
+	object Films : Destination("films")
+	object FilmDetail : Destination("character/{characterId}") {
+		fun createRoute(filmId: Int?) = "anime/$filmId"
+	}
+	
+	object Games : Destination("games")
+	object GameDetail : Destination("character/{characterId}") {
+		fun createRoute(gameId: Int?) = "anime/$gameId"
+	}
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    private val avm by viewModels<AnimeApiViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            AniGaFiTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
-                ) {
-                    val navController = rememberNavController()
-                    AppScaffold(navController = navController, avm)
-                }
-            }
-        }
-    }
+@OptIn(ExperimentalMaterialApi::class) @AndroidEntryPoint class MainActivity : ComponentActivity() {
+	
+	private val avm by viewModels<AnimeApiViewModel>()
+	
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContent {
+			AniGaFiTheme {
+				// A surface container using the 'background' color from the theme
+				Surface(
+					modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
+				) {
+					val navController = rememberNavController()
+					AppScaffold(navController = navController, avm)
+				}
+			}
+		}
+	}
 }
 
 
 @ExperimentalMaterialApi
 @Composable
-fun AppScaffold(navController: NavHostController, avm: AnimeApiViewModel) {
-
-    val scaffoldState = rememberScaffoldState()
-
-    Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
-    ) { paddingValues ->
-
-        NavHost(
-            navController = navController, startDestination = Destination.Anime.route
-        ) {
-            composable(Destination.Anime.route) {
-                val pagerState = rememberPagerState(initialPage = 1)
-
-                HorizontalPager(state = pagerState, pageCount = 3) { page ->
-                    when (page) {
-                        0 -> {
-                            GamesScreen(navController, paddingValues)
-                        }
-
-                        1 -> {
-                            AnimeScreen(navController, avm, paddingValues)
-                        }
-
-                        2 -> {
-                            FilmsScreen(navController, paddingValues)
-                        }
-                    }
-                }
-
-            }
-
-        }
-
-    }
-
+fun AppScaffold(
+	navController: NavHostController,
+	avm: AnimeApiViewModel
+) {
+	
+	val scaffoldState = rememberScaffoldState()
+	
+	Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
+	) { paddingValues ->
+		
+		NavHost(
+			navController = navController, startDestination = Destination.Anime.route
+		) {
+			composable(Destination.Anime.route) {
+				val pagerState = rememberPagerState(initialPage = 1)
+				
+				HorizontalPager(state = pagerState, pageCount = 3) { page ->
+					when (page) {
+						0 -> {
+							GamesScreen(navController, paddingValues)
+						}
+						
+						1 -> {
+							AnimeScreen(navController, avm, paddingValues)
+						}
+						
+						2 -> {
+							FilmsScreen(navController, paddingValues)
+						}
+					}
+				}
+				
+			}
+			
+		}
+		
+	}
+	
 }

@@ -13,15 +13,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +47,7 @@ import eu.devhuba.anigafi.model.api.NetworkResult
 import eu.devhuba.anigafi.ui.theme.Beige
 import eu.devhuba.anigafi.ui.theme.Green
 import eu.devhuba.anigafi.ui.theme.Orange
+import eu.devhuba.anigafi.ui.theme.Orange2
 import eu.devhuba.anigafi.ui.theme.Typography
 import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
 import eu.wewox.textflow.TextFlow
@@ -56,6 +62,7 @@ fun AnimeScreen(
 ) {
 	
 	val result by avm.result.collectAsState()
+	var textSearch by remember { mutableStateOf("") }
 	
 	Column(
 		modifier = Modifier
@@ -65,13 +72,34 @@ fun AnimeScreen(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		
 		) {
-		OutlinedTextField(value = "text.value",
-			onValueChange = {},
+		
+		//Search bar
+		OutlinedTextField(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(16.dp, 0.dp, 16.dp, 0.dp),
+			value = textSearch,
+			leadingIcon = {
+				Icon(
+					painter = painterResource(id = R.drawable.ic_search), contentDescription = null
+				)
+			},
+			onValueChange = { textSearch = it },
 			label = { Text(text = stringResource(R.string.anime_search_label)) },
-			placeholder = { Text(text = stringResource(R.string.anime_search_placeholder)) },
-			keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+			keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+			keyboardActions = KeyboardActions(onDone = {
+				//TODO: here need to be search request	
+				textSearch = ""
+			}),
+			singleLine = true,
+			colors = TextFieldDefaults.outlinedTextFieldColors(
+				unfocusedBorderColor = Orange2,
+				focusedBorderColor = Orange,
+				focusedLabelColor = Orange
+			)
 		)
 		
+		//Content list
 		Column(
 			modifier = Modifier.fillMaxSize(),
 			horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,12 +122,13 @@ fun AnimeScreen(
 				}
 				
 				is NetworkResult.Error -> {
-					Text(text = "Error: ${result.message}")
+					Text(text = "Error: ${result.message}", color = Color.White)
 				}
 			}
 		}
 	}
 }
+
 
 @Composable
 fun ShowAnimeList(
