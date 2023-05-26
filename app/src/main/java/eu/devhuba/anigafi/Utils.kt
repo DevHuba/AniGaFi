@@ -5,8 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
 
-const val maxLengthName = 40
-
 @Composable
 fun ImageTemplate(
 	url: String?,

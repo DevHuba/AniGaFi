@@ -2,6 +2,7 @@
 
 package eu.devhuba.anigafi
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,19 +17,26 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.devhuba.anigafi.ui.theme.AniGaFiTheme
+import eu.devhuba.anigafi.ui.theme.DarkBlack
 import eu.devhuba.anigafi.view.anime.AnimeScreen
+import eu.devhuba.anigafi.view.auth.HomeScreen
 import eu.devhuba.anigafi.view.films.FilmsScreen
 import eu.devhuba.anigafi.view.games.GamesScreen
 import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
 
 sealed class Destination(val route: String) {
+	
+	object Auth : Destination("auth")
+	
 	object Anime : Destination("anime")
 	object AnimeDetail : Destination("character/{characterId}") {
 		fun createRoute(animeId: Int?) = "anime/$animeId"
@@ -45,14 +53,23 @@ sealed class Destination(val route: String) {
 	}
 }
 
-@OptIn(ExperimentalMaterialApi::class) @AndroidEntryPoint class MainActivity : ComponentActivity() {
+@OptIn(ExperimentalMaterialApi::class)
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
 	
 	private val avm by viewModels<AnimeApiViewModel>()
+	
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
 			AniGaFiTheme {
+				//Style status bar
+				val systemUiController = rememberSystemUiController()
+				SideEffect {
+					systemUiController.setStatusBarColor(color = DarkBlack, darkIcons = false)
+				}
+				
 				// A surface container using the 'background' color from the theme
 				Surface(
 					modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
@@ -77,10 +94,18 @@ fun AppScaffold(
 	
 	Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
 	) { paddingValues ->
+
+//		TODO: Check what screen was last
+		
 		
 		NavHost(
-			navController = navController, startDestination = Destination.Anime.route
+			navController = navController, startDestination = Destination.Auth.route
 		) {
+			
+			composable(Destination.Auth.route) {
+				HomeScreen(navController, paddingValues)
+			}
+			
 			composable(Destination.Anime.route) {
 				val pagerState = rememberPagerState(initialPage = 1)
 				

@@ -7,6 +7,7 @@ val LightBlack = Color(0xFF454545)
 val ContrastOrange = Color(0xFFFF6000)
 val Orange = Color(0xFFFFA559)
 val Beige = Color(0xFFFFE6C7)
+val DarkBlack = Color(0xFF282634)
 
 //Secondary colors
 val Gray = Color(0xFFEFF5F5)

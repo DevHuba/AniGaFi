@@ -38,11 +38,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import eu.devhuba.anigafi.AppConstants
 import eu.devhuba.anigafi.ImageTemplate
 import eu.devhuba.anigafi.R
-import eu.devhuba.anigafi.maxLengthName
 import eu.devhuba.anigafi.model.AnimeApiResponse
-import eu.devhuba.anigafi.model.Constants
+import eu.devhuba.anigafi.model.ApiConstants
 import eu.devhuba.anigafi.model.api.NetworkResult
 import eu.devhuba.anigafi.ui.theme.Beige
 import eu.devhuba.anigafi.ui.theme.Green
@@ -66,9 +66,9 @@ fun AnimeScreen(
 	
 	Column(
 		modifier = Modifier
-			.fillMaxSize()
-			.padding(bottom = paddingValues.calculateBottomPadding())
-			.background(Color.Black),
+				.fillMaxSize()
+				.padding(bottom = paddingValues.calculateBottomPadding())
+				.background(Color.Black),
 		horizontalAlignment = Alignment.CenterHorizontally,
 		
 		) {
@@ -76,8 +76,8 @@ fun AnimeScreen(
 		//Search bar
 		OutlinedTextField(
 			modifier = Modifier
-				.fillMaxWidth()
-				.padding(16.dp, 0.dp, 16.dp, 0.dp),
+					.fillMaxWidth()
+					.padding(16.dp, 0.dp, 16.dp, 0.dp),
 			value = textSearch,
 			leadingIcon = {
 				Icon(
@@ -135,7 +135,7 @@ fun ShowAnimeList(
 	result: NetworkResult<List<AnimeApiResponse>>,
 	navController: NavHostController,
 ) {
-	val baseUrlForImage = Constants.BASE_URL_FOR_IMAGE
+	val baseUrlForImage = ApiConstants.BASE_URL_FOR_IMAGE
 	
 	result.data?.let { animes ->
 		LazyColumn(
@@ -156,9 +156,10 @@ fun ShowAnimeList(
 				val textNextEpisodeNumber = anime.next_episode
 				
 				val type = if (anime.anime?.kind == "tv") "Сериал" else "Неизвестный"
-				val formattedAnimeName = if (textAnimeNameRUS?.length!! > maxLengthName) {
-					textAnimeNameRUS.take(maxLengthName).plus("...")
-				} else textAnimeNameRUS
+				val formattedAnimeName =
+					if (textAnimeNameRUS?.length!! > AppConstants.ANIME_NAME_MAX_LENGTH) {
+						textAnimeNameRUS.take(AppConstants.ANIME_NAME_MAX_LENGTH).plus("...")
+					} else textAnimeNameRUS
 				
 				//Style inside String
 				val annotatedTextNextEpisode = buildAnnotatedString {
@@ -193,10 +194,10 @@ fun ShowAnimeList(
 				
 				Column(
 					modifier = Modifier
-						.background(Color.Black)
-						.fillMaxSize()
-						.wrapContentHeight()
-						.padding(16.dp, 4.dp)
+							.background(Color.Black)
+							.fillMaxSize()
+							.wrapContentHeight()
+							.padding(16.dp, 4.dp)
 				
 				) {
 					Row(
