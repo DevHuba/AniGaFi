@@ -3,7 +3,9 @@
 package eu.devhuba.anigafi
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -34,101 +36,121 @@ import eu.devhuba.anigafi.view.games.GamesScreen
 import eu.devhuba.anigafi.viewmodel.AnimeApiViewModel
 
 sealed class Destination(val route: String) {
-	
-	object Auth : Destination("auth")
-	
-	object Anime : Destination("anime")
-	object AnimeDetail : Destination("character/{characterId}") {
-		fun createRoute(animeId: Int?) = "anime/$animeId"
-	}
-	
-	object Films : Destination("films")
-	object FilmDetail : Destination("character/{characterId}") {
-		fun createRoute(filmId: Int?) = "anime/$filmId"
-	}
-	
-	object Games : Destination("games")
-	object GameDetail : Destination("character/{characterId}") {
-		fun createRoute(gameId: Int?) = "anime/$gameId"
-	}
+
+    object Auth : Destination("auth")
+
+    object Anime : Destination("anime")
+    object AnimeDetail : Destination("character/{characterId}") {
+        fun createRoute(animeId: Int?) = "anime/$animeId"
+    }
+
+    object Films : Destination("films")
+    object FilmDetail : Destination("character/{characterId}") {
+        fun createRoute(filmId: Int?) = "anime/$filmId"
+    }
+
+    object Games : Destination("games")
+    object GameDetail : Destination("character/{characterId}") {
+        fun createRoute(gameId: Int?) = "anime/$gameId"
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-	
-	private val avm by viewModels<AnimeApiViewModel>()
-	
-	
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setContent {
-			AniGaFiTheme {
-				//Style status bar
-				val systemUiController = rememberSystemUiController()
-				SideEffect {
-					systemUiController.setStatusBarColor(color = DarkBlack, darkIcons = false)
-				}
-				
-				// A surface container using the 'background' color from the theme
-				Surface(
-					modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
-				) {
-					val navController = rememberNavController()
-					AppScaffold(navController = navController, avm)
-				}
-			}
-		}
-	}
+
+    private val avm by viewModels<AnimeApiViewModel>()
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val uri = intent?.data
+        val code = uri?.getQueryParameter("code")
+            .toString()
+        Log.i("this", "code -> $code")
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            AniGaFiTheme {
+
+
+//                val data: Uri? = intent?.data
+//                if (data != null && data.scheme == "https") {
+//                    val name = data.getQueryParameter("authorize")
+//                    Log.i("this", "name -> $name")
+//                }
+
+                //Style status bar
+                val systemUiController = rememberSystemUiController()
+                SideEffect {
+                    systemUiController.setStatusBarColor(color = DarkBlack, darkIcons = false)
+                }
+
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
+                ) {
+                    val navController = rememberNavController()
+                    AppScaffold(navController = navController, avm)
+                }
+            }
+        }
+    }
 }
 
 
 @ExperimentalMaterialApi
 @Composable
 fun AppScaffold(
-	navController: NavHostController,
-	avm: AnimeApiViewModel
+    navController: NavHostController,
+    avm: AnimeApiViewModel
 ) {
-	
-	val scaffoldState = rememberScaffoldState()
-	
-	Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
-	) { paddingValues ->
+    val scaffoldState = rememberScaffoldState()
 
-//		TODO: Check what screen was last
-		
-		
-		NavHost(
-			navController = navController, startDestination = Destination.Auth.route
-		) {
-			
-			composable(Destination.Auth.route) {
-				HomeScreen(navController, paddingValues)
-			}
-			
-			composable(Destination.Anime.route) {
-				val pagerState = rememberPagerState(initialPage = 1)
-				
-				HorizontalPager(state = pagerState, pageCount = 3) { page ->
-					when (page) {
-						0 -> {
-							GamesScreen(navController, paddingValues)
-						}
-						
-						1 -> {
-							AnimeScreen(navController, avm, paddingValues)
-						}
-						
-						2 -> {
-							FilmsScreen(navController, paddingValues)
-						}
-					}
-				}
-				
-			}
-			
-		}
-		
-	}
-	
+    Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
+    ) { paddingValues ->
+
+        NavHost(
+            navController = navController, startDestination = Destination.Auth.route
+        ) {
+
+            composable(Destination.Auth.route) {
+                HomeScreen(navController, paddingValues)
+//                { isAuthenticated
+//                    ->
+//                    if (isAuthenticated) {
+//                        navController.navigate(Destination.Anime.route)
+//                    }
+//                }
+            }
+
+            composable(Destination.Anime.route) {
+                val pagerState = rememberPagerState(initialPage = 1)
+
+                //		TODO: Check what screen was last
+
+                HorizontalPager(state = pagerState, pageCount = 3) { page ->
+                    when (page) {
+                        0 -> {
+                            GamesScreen(navController, paddingValues)
+                        }
+
+                        1 -> {
+                            AnimeScreen(navController, avm, paddingValues)
+                        }
+
+                        2 -> {
+                            FilmsScreen(navController, paddingValues)
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
 }

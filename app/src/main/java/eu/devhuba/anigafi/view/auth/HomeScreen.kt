@@ -21,32 +21,36 @@ import eu.devhuba.anigafi.ui.theme.DarkBlack
 
 @Composable
 fun HomeScreen(
-	navController: NavHostController,
-	paddingValues: PaddingValues
+    navController: NavHostController,
+    paddingValues: PaddingValues,
 ) {
-	val context = LocalContext.current
-	
-	Column(
-		modifier = Modifier
-				.fillMaxSize()
-				.background(DarkBlack),
-	) {
-		
-		Image(
-			painter = painterResource(id = R.drawable.logo),
-			modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-			contentDescription = null
-		)
-		
-		Button(
-			modifier = Modifier.align(Alignment.CenterHorizontally),
-			onClick = {
-				val url = ApiConstants.ANIME_AUTH_URI
-				val customTabsIntent = CustomTabsIntent.Builder().build()
-				customTabsIntent.launchUrl(context, Uri.parse(url))
-			}) {
-			Text(text = "Login in Shikimori")
-		}
-	}
-	
+    val context = LocalContext.current
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DarkBlack),
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+            contentDescription = null
+        )
+
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = {
+
+
+                val authUrl = ApiConstants.ANIME_AUTH_URI
+                val customTabsIntent = CustomTabsIntent.Builder()
+                    .build()
+                customTabsIntent.launchUrl(context, Uri.parse(authUrl))
+
+            }) {
+            Text(text = "Login in Shikimori")
+        }
+    }
+
 }

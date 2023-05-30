@@ -76,7 +76,6 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     implementation 'androidx.compose.material:material:1.2.0'
-    implementation 'androidx.browser:browser:1.4.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -104,6 +103,8 @@ dependencies {
     implementation "io.coil-kt:coil-compose:$coil_version"
     implementation "io.coil-kt:coil-svg:$coil_version"
     implementation "io.github.oleksandrbalan:textflow:1.1.0"
+    implementation 'androidx.browser:browser:1.5.0'
+
 //    Try animation on navigation - AnimatedNavHost
 //    tutorial - https://shortcut.io/tech/adding-animations-to-your-jetpack-compose-navigation/
 //    implementation "com.google.accompanist:accompanist-navigation-animation:0.16.0"
