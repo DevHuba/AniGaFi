@@ -13,6 +13,7 @@ import javax.inject.Inject
 class AnimeApiViewModel
 @Inject
 constructor(private val repo: ShikimoriApiRepo) : ViewModel() {
+
     val result = repo.animes
 
     init {
@@ -31,4 +32,7 @@ constructor(private val repo: ShikimoriApiRepo) : ViewModel() {
             "this is onQueryUpdate"
         )
     }
+
+
 }
+

@@ -42,14 +42,13 @@ fun HomeScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = {
 
-
                 val authUrl = ApiConstants.ANIME_AUTH_URI
                 val customTabsIntent = CustomTabsIntent.Builder()
                     .build()
                 customTabsIntent.launchUrl(context, Uri.parse(authUrl))
 
             }) {
-            Text(text = "Login in Shikimori")
+            Text(text = "Login for Anime data")
         }
     }
 

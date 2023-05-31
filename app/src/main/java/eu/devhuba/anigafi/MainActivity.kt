@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.devhuba.anigafi.ui.theme.AniGaFiTheme
@@ -62,11 +63,12 @@ class MainActivity : ComponentActivity() {
     private val avm by viewModels<AnimeApiViewModel>()
 
     override fun onNewIntent(intent: Intent?) {
+        Log.i("this", "start -> start")
         super.onNewIntent(intent)
         val uri = intent?.data
-        val code = uri?.getQueryParameter("code")
-            .toString()
+        val code = uri?.lastPathSegment
         Log.i("this", "code -> $code")
+        Log.i("this", "uri -> $uri")
     }
 
 
@@ -74,13 +76,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AniGaFiTheme {
-
-
-//                val data: Uri? = intent?.data
-//                if (data != null && data.scheme == "https") {
-//                    val name = data.getQueryParameter("authorize")
-//                    Log.i("this", "name -> $name")
-//                }
 
                 //Style status bar
                 val systemUiController = rememberSystemUiController()
@@ -95,6 +90,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     AppScaffold(navController = navController, avm)
                 }
+
             }
         }
     }
@@ -112,11 +108,22 @@ fun AppScaffold(
     Scaffold(topBar = { }, bottomBar = { }, scaffoldState = scaffoldState
     ) { paddingValues ->
 
+        val uri = "https://tahvel.edu.ee/#"
+
         NavHost(
             navController = navController, startDestination = Destination.Auth.route
         ) {
 
-            composable(Destination.Auth.route) {
+            composable(
+                Destination.Auth.route, deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "$uri/{authCode}"
+                    }
+                )
+            ) { backStackEntry ->
+                val authCode = backStackEntry.arguments?.getString("authCode")
+                Log.i("this", "authCode -> $authCode")
+
                 HomeScreen(navController, paddingValues)
 //                { isAuthenticated
 //                    ->

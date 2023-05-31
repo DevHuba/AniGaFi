@@ -23,7 +23,11 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AniGaFi">
+
+            <tools:validation testUrl="https://tahvel.edu.ee/#" />
+            <tools:validation testUrl="https://tahvel.edu.ee/#/timetable/24/generalTimetable/teacher" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +44,16 @@
                 <data
                     android:scheme="https"
                     android:host="shikimori.me" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="tahvel.edu.ee" />
             </intent-filter>
         </activity>
     </application>
