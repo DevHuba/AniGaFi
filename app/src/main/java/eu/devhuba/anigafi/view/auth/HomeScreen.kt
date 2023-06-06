@@ -1,7 +1,5 @@
 package eu.devhuba.anigafi.view.auth
 
-import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,13 +14,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import eu.devhuba.anigafi.R
-import eu.devhuba.anigafi.model.ApiConstants
 import eu.devhuba.anigafi.ui.theme.DarkBlack
+import eu.devhuba.anigafi.viewmodel.MainViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
     paddingValues: PaddingValues,
+    mvm: MainViewModel,
 ) {
     val context = LocalContext.current
 
@@ -42,10 +41,9 @@ fun HomeScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = {
 
-                val authUrl = ApiConstants.ANIME_AUTH_URI
-                val customTabsIntent = CustomTabsIntent.Builder()
-                    .build()
-                customTabsIntent.launchUrl(context, Uri.parse(authUrl))
+                
+                mvm.login()
+
 
             }) {
             Text(text = "Login for Anime data")

@@ -33,6 +33,5 @@ class AniGaFiApplication : Application() {
 
         //Usage
         Timber.d("App created ! ")
-
     }
 }
