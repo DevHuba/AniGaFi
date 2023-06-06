@@ -14,6 +14,11 @@ android {
     compileSdk 33
 
     defaultConfig {
+
+        manifestPlaceholders = [
+                appAuthRedirectScheme: "eu.devhuba.anigafi"
+        ]
+
         applicationId "eu.devhuba.anigafi"
         minSdk 26
         targetSdk 33
@@ -80,8 +85,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-// system bars customization
+    // system bars customization
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
+
+    //Lazy logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -104,6 +112,7 @@ dependencies {
     implementation "io.coil-kt:coil-svg:$coil_version"
     implementation "io.github.oleksandrbalan:textflow:1.1.0"
     implementation 'androidx.browser:browser:1.5.0'
+    implementation 'net.openid:appauth:0.9.1'
 
 //    Try animation on navigation - AnimatedNavHost
 //    tutorial - https://shortcut.io/tech/adding-animations-to-your-jetpack-compose-navigation/
