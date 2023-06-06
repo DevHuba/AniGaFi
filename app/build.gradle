@@ -88,7 +88,11 @@ dependencies {
     // system bars customization
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
 
-    //Lazy logging
+    //OAuth with AppAuth
+    implementation 'net.openid:appauth:0.9.1'
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
+
+    //Lazy log
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Retrofit
@@ -112,7 +116,7 @@ dependencies {
     implementation "io.coil-kt:coil-svg:$coil_version"
     implementation "io.github.oleksandrbalan:textflow:1.1.0"
     implementation 'androidx.browser:browser:1.5.0'
-    implementation 'net.openid:appauth:0.9.1'
+
 
 //    Try animation on navigation - AnimatedNavHost
 //    tutorial - https://shortcut.io/tech/adding-animations-to-your-jetpack-compose-navigation/
