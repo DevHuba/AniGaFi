@@ -12,16 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavHostController
 import eu.devhuba.anigafi.R
 import eu.devhuba.anigafi.ui.theme.DarkBlack
 import eu.devhuba.anigafi.viewmodel.MainViewModel
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController,
     paddingValues: PaddingValues,
     mvm: MainViewModel,
+    navigate: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -41,7 +40,7 @@ fun HomeScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = {
 
-                
+
                 mvm.login()
 
 

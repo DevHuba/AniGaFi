@@ -134,7 +134,13 @@ fun AppScaffold(
         ) {
 
             composable(Destination.Auth.route) {
-                HomeScreen(navController, paddingValues, mvm)
+                HomeScreen(paddingValues, mvm, navigate = {
+                    // Do not pass navController to every composable -> use navigate () -> Unit
+                    // To avoid calling navigate on every recomposition
+                    navController.navigate(Destination.Anime.route) {
+                        launchSingleTop = true
+                    }
+                })
             }
 
             composable(Destination.Anime.route) {
