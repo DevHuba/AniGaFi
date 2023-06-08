@@ -23,7 +23,6 @@ object ApiConstants {
     const val MESSAGE_DIGEST_ALGORITHM = "SHA-256"
     const val URL_AUTH_REDIRECT = "eu.devhuba.anigafi:/oauth2redirect"
 
-
 }
 
 //

@@ -1,5 +1,6 @@
 package eu.devhuba.anigafi.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.text.TextUtils
@@ -7,7 +8,7 @@ import android.util.Base64
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import com.auth0.android.jwt.JWT
 import dagger.hilt.android.internal.Contexts.getApplication
 import eu.devhuba.anigafi.AniGaFiApplication
@@ -24,13 +25,10 @@ import timber.log.Timber
 import java.security.MessageDigest
 import java.security.SecureRandom
 
-class MainViewModel : ViewModel() {
+class MainViewMode(application: Application) : AndroidViewModel(application) {
 
     private var isAuthenticated by mutableStateOf(false)
     private var isFirstRun by mutableStateOf(true)
-
-
-    private val application = AniGaFiApplication()
 
     private var authState: AuthState = AuthState()
     private var jwt: JWT? = null

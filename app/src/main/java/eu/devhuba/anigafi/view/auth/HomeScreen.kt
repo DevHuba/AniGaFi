@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import eu.devhuba.anigafi.R
 import eu.devhuba.anigafi.ui.theme.DarkBlack
@@ -22,8 +21,6 @@ fun HomeScreen(
     mvm: MainViewModel,
     navigate: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,6 +43,14 @@ fun HomeScreen(
 
             }) {
             Text(text = "Login for Anime data")
+        }
+
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = {
+                navigate()
+            }) {
+            Text(text = "Go Back")
         }
     }
 
