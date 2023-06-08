@@ -89,7 +89,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
 
     //OAuth with AppAuth
-    implementation 'net.openid:appauth:0.9.1'
+    implementation 'net.openid:appauth:0.11.1'
     implementation 'com.auth0.android:jwtdecode:2.0.0'
 
     //Lazy log

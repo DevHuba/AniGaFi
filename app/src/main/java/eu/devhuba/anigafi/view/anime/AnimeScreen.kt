@@ -135,7 +135,7 @@ fun ShowAnimeList(
     result: NetworkResult<List<AnimeApiResponse>>,
     navController: NavHostController,
 ) {
-    val baseUrlForImage = ApiConstants.BASE_URL_FOR_IMAGE
+    val baseUrlForImage = ApiConstants.ANIME_BASE_URL_FOR_IMAGE
 
     result.data?.let { animes ->
         LazyColumn(
