@@ -5,4 +5,5 @@
     <string name="anime_search_label">Поиск аниме</string>
     <string name="anime_search_placeholder">Aниме</string>
     <string name="anime_text_next_episode">"Следующий эпизод : "</string>
+    <string name="authorization_canceled">Authorization canceled</string>
 </resources>

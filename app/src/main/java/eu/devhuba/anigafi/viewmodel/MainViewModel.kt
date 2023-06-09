@@ -1,12 +1,25 @@
 package eu.devhuba.anigafi.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.util.Base64
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import eu.devhuba.anigafi.R
 import eu.devhuba.anigafi.model.auth.AuthRepository
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.TokenRequest
 import timber.log.Timber
 import java.security.SecureRandom
 
@@ -16,6 +29,51 @@ class MainViewMode(application: Application) : AndroidViewModel(application) {
 	private var isFirstRun by mutableStateOf(true)
 	
 	private val authRepository = AuthRepository()
+	private val authService: AuthorizationService = AuthorizationService(getApplication())
+	
+	private val openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
+	private val toastEventChannel = Channel<Int>(Channel.BUFFERED)
+	private val authSuccessEventChannel = Channel<Unit>(Channel.BUFFERED)
+	
+	private val loadingMutableStateFlow = MutableStateFlow(false)
+	
+	val openAuthPageFlow: Flow<Intent>
+		get() = openAuthPageEventChannel.receiveAsFlow()
+	
+	val loadingFlow: Flow<Boolean>
+		get() = loadingMutableStateFlow.asStateFlow()
+	
+	val toastFlow: Flow<Int>
+		get() = toastEventChannel.receiveAsFlow()
+	
+	val authSuccessFlow: Flow<Unit>
+		get() = authSuccessEventChannel.receiveAsFlow()
+	
+	fun onAuthCodeFailed(exception: AuthorizationException) {
+		toastEventChannel.trySendBlocking(R.string.authorization_canceled)
+	}
+	
+	fun onAuthCodeReceived(tokenRequest: TokenRequest) {
+		Timber.tag("oauth").d("3. Received code = ${tokenRequest.authorizationCode}")
+		
+		viewModelScope.launch {
+			loadingMutableStateFlow.value = true
+			
+			runCatching {
+				Timber.tag("oauth")
+						.d("4. Change code to token. Url = ${tokenRequest.configuration.tokenEndpoint}, verifier = ${tokenRequest.codeVerifier}")
+				
+				authRepository.performTokenRequest(
+					authService = authService,
+					tokenRequest = tokenRequest
+				).onSu
+				
+			}
+			
+		}
+		
+		
+	}
 	
 	init {
 

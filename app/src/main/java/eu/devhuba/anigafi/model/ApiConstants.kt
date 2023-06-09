@@ -16,5 +16,5 @@ object ApiConstants {
 	const val ANIME_CLIENT_SECRET = BuildConfig.ANIME_SECRET
 	const val ANIME_REDIRECT_URI = "urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob"
 	const val ANIME_CALLBACK_URL = "eu.devhuba.anigafi://shikimori.me/callback"
-	const val ANIME_LOGOUT_CALLBACK_URL = "eu.devhuba.anigafi://shikimori.me/logout_callback"
+	const val ANIME_LOGOUT_CALLBACK_URL = "eu.devhuba.anigafi://shikimori.me/users/sign_out"
 }
