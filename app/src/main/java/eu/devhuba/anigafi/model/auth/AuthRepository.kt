@@ -30,6 +30,9 @@ class AuthRepository {
 		authService: AuthorizationService,
 		tokenRequest: TokenRequest
 	) {
+		
+		Timber.tag("oauth").d("authService -> $authService +treq $tokenRequest")
+		
 		val tokens = AppAuth.peformTokenRequestSuspend(authService, tokenRequest)
 		
 		TokenStorage.accessToken = tokens.accessToken

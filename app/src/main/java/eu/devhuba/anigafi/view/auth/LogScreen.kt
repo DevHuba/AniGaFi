@@ -18,13 +18,11 @@ import androidx.navigation.NavHostController
 import eu.devhuba.anigafi.R
 import eu.devhuba.anigafi.model.ApiConstants
 import eu.devhuba.anigafi.ui.theme.DarkBlack
-import eu.devhuba.anigafi.viewmodel.MainViewModel
 
 @Composable
 fun LogScreen(
 	navController: NavHostController,
 	paddingValues: PaddingValues,
-	mvm: MainViewModel,
 ) {
 	val context = LocalContext.current
 	
@@ -44,7 +42,6 @@ fun LogScreen(
 			modifier = Modifier.align(Alignment.CenterHorizontally),
 			onClick = {
 				
-				mvm.login()
 				
 				val authUrl = ApiConstants.ANIME_AUTH_URI
 				val customTabsIntent = CustomTabsIntent.Builder()

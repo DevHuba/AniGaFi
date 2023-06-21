@@ -6,4 +6,5 @@
     <string name="anime_search_placeholder">Aниме</string>
     <string name="anime_text_next_episode">"Следующий эпизод : "</string>
     <string name="authorization_canceled">Authorization canceled</string>
+    <string name="auth_doesnt_completed">Auth doesnt completed</string>
 </resources>

@@ -3,6 +3,7 @@ package eu.devhuba.anigafi.viewmodel
 import android.app.Application
 import android.content.Intent
 import android.util.Base64
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,7 +24,7 @@ import net.openid.appauth.TokenRequest
 import timber.log.Timber
 import java.security.SecureRandom
 
-class MainViewMode(application: Application) : AndroidViewModel(application) {
+class AuthViewMode(application: Application) : AndroidViewModel(application) {
 	
 	private var isAuthenticated by mutableStateOf(false)
 	private var isFirstRun by mutableStateOf(true)
@@ -54,6 +55,7 @@ class MainViewMode(application: Application) : AndroidViewModel(application) {
 	}
 	
 	fun onAuthCodeReceived(tokenRequest: TokenRequest) {
+		
 		Timber.tag("oauth").d("3. Received code = ${tokenRequest.authorizationCode}")
 		
 		viewModelScope.launch {
@@ -62,27 +64,41 @@ class MainViewMode(application: Application) : AndroidViewModel(application) {
 			runCatching {
 				Timber.tag("oauth")
 						.d("4. Change code to token. Url = ${tokenRequest.configuration.tokenEndpoint}, verifier = ${tokenRequest.codeVerifier}")
-				
 				authRepository.performTokenRequest(
 					authService = authService,
 					tokenRequest = tokenRequest
-				).onSu
+				)
+			}.onSuccess {
+				loadingMutableStateFlow.value = false
+				authSuccessEventChannel.send(Unit)
+			}.onFailure {
+				loadingMutableStateFlow.value = true
+				toastEventChannel.send(R.string.auth_doesnt_completed)
 				
 			}
-			
 		}
+	}
+	
+	fun openLoginPage() {
+		val customTabsIntent = CustomTabsIntent.Builder().build()
+		val authRequest = authRepository.getAuthRequest()
 		
+		Timber.tag("oauth")
+				.d("1. Generate verifier = ${authRequest.codeVerifier}, challenge = ${authRequest.codeVerifierChallenge}")
+		
+		val openAuthPageIntent = authService.getAuthorizationRequestIntent(
+			authRequest,
+			customTabsIntent
+		)
+		
+		openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
+		Timber.tag("oauth").d("2. Open auth page: ${authRequest.toUri()}")
 		
 	}
 	
-	init {
-
-//        authServiceConfig = AuthorizationServiceConfiguration(
-//            Uri.parse(ApiConstants.ANIME_AUTH_URI),  // authorization endpoint
-//            Uri.parse(ApiConstants.ANIME_TOKEN_URI)
-//        ) // token endpoint
-		
-		
+	override fun onCleared() {
+		super.onCleared()
+		authService.dispose()
 	}
 	
 	
