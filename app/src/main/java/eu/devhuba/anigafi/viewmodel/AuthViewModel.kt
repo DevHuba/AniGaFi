@@ -91,7 +91,18 @@ class AuthViewMode(application: Application) : AndroidViewModel(application) {
 			customTabsIntent
 		)
 		
-		openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
+		val result = openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
+		
+		if (result.isFailure) {
+			Timber.tag("oauth")
+					.e(
+						result.exceptionOrNull(),
+						"Failed to send intent to openAuthPageEventChannel"
+					)
+		} else {
+			Timber.tag("oauth").d("result -> $result")
+		}
+		
 		Timber.tag("oauth").d("2. Open auth page: ${authRequest.toUri()}")
 		
 	}

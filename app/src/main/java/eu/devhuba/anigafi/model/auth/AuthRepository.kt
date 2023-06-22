@@ -31,9 +31,9 @@ class AuthRepository {
 		tokenRequest: TokenRequest
 	) {
 		
-		Timber.tag("oauth").d("authService -> $authService +treq $tokenRequest")
+		Timber.tag("oauth").d("authService -> $authService + treq -> $tokenRequest")
 		
-		val tokens = AppAuth.peformTokenRequestSuspend(authService, tokenRequest)
+		val tokens = AppAuth.performTokenRequestSuspend(authService, tokenRequest)
 		
 		TokenStorage.accessToken = tokens.accessToken
 		TokenStorage.refreshToken = tokens.refreshToken
@@ -41,7 +41,6 @@ class AuthRepository {
 		
 		Timber.tag("oauth")
 				.d("6. Tokens accepted:\n access = ${tokens.accessToken}\nrefreshToken = ${tokens.refreshToken}\nidToken = ${tokens.idToken}")
-		
 		
 	}
 }
